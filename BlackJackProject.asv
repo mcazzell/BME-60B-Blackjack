@@ -6,19 +6,16 @@ clear; clc;
 mainDeck = makeShuffledDeck();
 
 %% Dealer Decision Making
-    % Very simple function, if hand >=17 stopp hitting
-    % we can make this interesting with a randint modifier :)
+
 
 %% Place Bets Function
-    % Create a new column in the player table for
-    % how much they are betting.
-    % Interact with the player's balance to add/subtract
-    % when they win/lose
+    % 
 
 %% Make Players Function, Give initial $, Deal Starting hands
     % Plan: Each character is a table
     % A column for their cards (which is a nested table)
     % A column for thier bets (run bet function to modify)
+
 
 %% Deal Cards Function, Create Dealer, Hit/Stand
     % Start with a check to see if player can be dealt cards
