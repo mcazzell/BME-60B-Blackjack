@@ -1,0 +1,13 @@
+function [playerHand, deck] = dealCard(playerHand, deck)
+% Deals one card from the deck to the player
+% Updates both the player's hand and the deck
+
+% Take top card
+card = deck(:,1);
+
+% Add card to player's hand
+playerHand = [playerHand card];
+
+% Remove card from deck
+deck(:,1) = [];
+end
