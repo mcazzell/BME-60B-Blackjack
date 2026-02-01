@@ -1,27 +1,34 @@
 clear all; clc;
+% clear workspace and command window
 
 %% Initialize Players+Dealer
 
-% ask how many players 
+% Establishs global variable
+% This is reused a lot in many functions and does not change
 global numPlayers;
+
+% ask how many players 
 numPlayers = input('How many players? ');
 
 % initialize player balance
 for i = 1:numPlayers
-    players(i).balance = 100; % starting money
+    players(i).balance = 100; % starting money: $100
 end 
 
-% initializing dealer balance
+% initializing dealer balance, $1000
 dealer.balance = 1000; 
 
 %% Begin Game Loop
+
+% While loop keeps the gameplay loop going until
+%   players choose to stop playing
 keepPlaying = true;
 while keepPlaying == true
 
 mainDeck = makeShuffledDeck();
 % make a shuffled deck of cards
 
-% Resets player bets, hand, bust status, & outcome
+% (re)sets player bets, hand, bust status, & outcome
 for i = 1:numPlayers
     players(i).bet = 0; % current bet
     players(i).hand = table(); % empty hand

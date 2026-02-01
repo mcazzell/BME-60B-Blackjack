@@ -1,27 +1,34 @@
-clear; clc; clear all
+clear all; clc;
+% clear workspace and command window
 
 %% Initialize Players+Dealer
 
-% ask how many players 
+% Establishs global variable
+% This is reused a lot in many functions and does not change
 global numPlayers;
+
+% ask how many players 
 numPlayers = input('How many players? ');
 
 % initialize player balance
 for i = 1:numPlayers
-    players(i).balance = 100; % starting money
+    players(i).balance = 100; % starting money: $100
 end 
 
-% initializing dealer balance
+% initializing dealer balance, 
 dealer.balance = 1000; 
 
 %% Begin Game Loop
+
+% While loop keeps the gameplay loop going until
+%   players choose to stop playing
 keepPlaying = true;
 while keepPlaying == true
 
 mainDeck = makeShuffledDeck();
 % make a shuffled deck of cards
 
-% Resets player bets, hand, bust status, & outcome
+% (re)sets player bets, hand, bust status, & outcome
 for i = 1:numPlayers
     players(i).bet = 0; % current bet
     players(i).hand = table(); % empty hand
@@ -72,36 +79,13 @@ if dealerTotal > 21
     dealer.isBust = true;
 end
 
-%% Calculate Player Hand (+Ace Consideration)
+%% Calculate Player Hand (+Ace Consideration) & Ask Hit/Stand
 
 for i = 1:numPlayers
-    isStanding = false;
     
-    while ~players(i).isBust && ~isStanding
-        % Calculate hand total (w/Ace consideration)
-        currentTotal = calculateTotal(players(i).hand);
-        
-        % Display Hand of Player
-        fprintf('\n*Player %d Turn*\n', i);
-        disp(players(i).hand(:, {'cardName'}));
-        fprintf('Current Total: %d\n', currentTotal);
-        
-        if currentTotal > 21
-            fprintf('BUST! Player %d loses this hand.\n', i);
-            players(i).isBust = true;
-            break;
-        end
-        
-        % Get User Input
-        choice = input('Would you like to (h)it or (s)tand? ', 's');
-        
-        if strcmpi(choice, 'h')
-            [mainDeck, players(i).hand] = dealCard(mainDeck,...
-                players(i).hand);
-        else
-            isStanding = true;
-        end
-    end
+    fprintf('\n*Player %d Turn*\n', i);
+    
+    [players(i), mainDeck] = playerTurn(players(i), mainDeck);
 end
 
 %% Win/Lose/Push determination & Settle Money & Display Balance
@@ -159,8 +143,34 @@ choice = input('\nPlay another round? (y/n): ', 's');
         fprintf('Thanks for playing!\n');
     end
 end
-
-
+%% Ask player hit/stand function
+function [players, mainDeck] = playerTurn(players, mainDeck)
+    isStanding = false;
+    while ~players.isBust && ~isStanding
+        % Calculate hand total (w/Ace consideration)
+        currentTotal = calculateTotal(players.hand);
+        
+        % Display Hand of Player
+        disp(players.hand(:, {'cardName'}));
+        fprintf('Current Total: %d\n', currentTotal);
+        
+        if currentTotal > 21
+            fprintf('BUST!');
+            players.isBust = true;
+            break;
+        end
+        
+        % Hit/Stand prompt input
+        choice = input('Would you like to (h)it or (s)tand? ', 's');
+        
+        if strcmpi(choice, 'h')
+            [mainDeck, players.hand] = dealCard(mainDeck,...
+                players.hand);
+        else
+            isStanding = true;
+        end
+    end
+end
 %% Place Bet Function 
 function player = placeBet(player, betAmount)
 
