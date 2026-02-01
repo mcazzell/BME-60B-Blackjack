@@ -105,10 +105,8 @@ for i = 1:numPlayers
 end
 
 %% Win/Lose/Push determination & Settle Money & Display Balance
-% determining outcome from hand
-    % ERROR, this does not compare to other players
-    % Ehh I'll fix soon
 
+% Determins outcome from hand
 for i = 1:numPlayers 
     playerTotal = calculateTotal(players(i).hand);
     % Get's the total value of the player's hand
@@ -180,17 +178,14 @@ function player = placeBet(player, betAmount)
 end 
 
 %% Money Settle Function
-% THERE IS AN ERROR HERE:
-    % Money is being made out of thin air
-    % Not enough money is being subtracted from dealer
-    % Too much money is being given to players
-    % Ehh I'll fix soon
+
+% Function to allocate money based on outcome
 function [player, dealer] = settleMoney(player, dealer, roundOutcome)
 
 switch roundOutcome
 
     case "win" 
-        player.balance = player.balance + player.bet * 2;
+        player.balance = player.balance + player.bet;
         dealer.balance = dealer.balance - player.bet;
     case "lose" 
         player.balance = player.balance - player.bet;   
@@ -202,7 +197,7 @@ end
 player.bet = 0; % bet is reset for next round
 end
 
-%% *Calculate Hand Value
+%% Calculate Hand Value
 function total = calculateTotal(handTable)
     if isempty(handTable)
         total = 0;
