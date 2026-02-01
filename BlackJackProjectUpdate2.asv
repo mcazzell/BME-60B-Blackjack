@@ -181,7 +181,7 @@ end
     % Money is being made out of thin air
     % Not enough money is being subtracted from dealer
     % Too much money is being given to players
-    % Ehh I'll fix soon
+    
 function [player, dealer] = settleMoney(player, dealer, roundOutcome)
 
 switch roundOutcome

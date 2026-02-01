@@ -106,12 +106,15 @@ end
 
 %% Win/Lose/Push determination & Settle Money & Display Balance
 % determining outcome from hand
+    % ERROR, this does not compare to other players
+    % Ehh I'll fix soon
 
 for i = 1:numPlayers 
     playerTotal = calculateTotal(players(i).hand);
-    % these values need to be calcualted from card values !!!
-    dealerTotal = sum(dealer.hand.values);
-    % also these so work on these later lololol=
+    % Get's the total value of the player's hand
+    
+    dealerTotal = calculateTotal(dealer.hand);
+    % Gets the total value of the dealer's hand
 
     if players(i).isBust 
         players(i).outcome = "lose"; 
