@@ -1,4 +1,4 @@
-clear all; clc;
+clear; clc; clear all
 
 %% Initialize Players+Dealer
 
