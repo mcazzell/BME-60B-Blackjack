@@ -72,36 +72,13 @@ if dealerTotal > 21
     dealer.isBust = true;
 end
 
-%% Calculate Player Hand (+Ace Consideration)
+%% Calculate Player Hand (+Ace Consideration) & Ask Hit/Stand
 
 for i = 1:numPlayers
-    isStanding = false;
     
-    while ~players(i).isBust && ~isStanding
-        % Calculate hand total (w/Ace consideration)
-        currentTotal = calculateTotal(players(i).hand);
-        
-        % Display Hand of Player
-        fprintf('\n*Player %d Turn*\n', i);
-        disp(players(i).hand(:, {'cardName'}));
-        fprintf('Current Total: %d\n', currentTotal);
-        
-        if currentTotal > 21
-            fprintf('BUST! Player %d loses this hand.\n', i);
-            players(i).isBust = true;
-            break;
-        end
-        
-        % Get User Input
-        choice = input('Would you like to (h)it or (s)tand? ', 's');
-        
-        if strcmpi(choice, 'h')
-            [mainDeck, players(i).hand] = dealCard(mainDeck,...
-                players(i).hand);
-        else
-            isStanding = true;
-        end
-    end
+    fprintf('\n*Player %d Turn*\n', i);
+    
+    [players(i), mainDeck] = playerTurn(players(i), mainDeck);
 end
 
 %% Win/Lose/Push determination & Settle Money & Display Balance
@@ -159,8 +136,34 @@ choice = input('\nPlay another round? (y/n): ', 's');
         fprintf('Thanks for playing!\n');
     end
 end
-
-
+%% Ask player hit/stand function
+function [players, mainDeck] = playerTurn(players, mainDeck)
+    isStanding = false;
+    while ~players.isBust && ~isStanding
+        % Calculate hand total (w/Ace consideration)
+        currentTotal = calculateTotal(players.hand);
+        
+        % Display Hand of Player
+        disp(players.hand(:, {'cardName'}));
+        fprintf('Current Total: %d\n', currentTotal);
+        
+        if currentTotal > 21
+            fprintf('BUST!');
+            players.isBust = true;
+            break;
+        end
+        
+        % Hit/Stand prompt input
+        choice = input('Would you like to (h)it or (s)tand? ', 's');
+        
+        if strcmpi(choice, 'h')
+            [mainDeck, players.hand] = dealCard(mainDeck,...
+                players.hand);
+        else
+            isStanding = true;
+        end
+    end
+end
 %% Place Bet Function 
 function player = placeBet(player, betAmount)
 
